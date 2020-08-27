@@ -29,7 +29,7 @@ heads();
                                                 <!-- <h5>Working</h5> -->
                                         </div>
                                         <div class="col s6">
-                                            <h5 class="mb-0 pt-2" id="d1">1885</h5>
+                                            <h5 class="mb-0 pt-2" id="d1">-</h5>
                                         </div>
                                     </div>
                                 </div>
@@ -44,7 +44,7 @@ heads();
                                                 <!-- <h5>Working</h5> -->
                                         </div>
                                         <div class="col s6">
-                                            <h5 class="mb-0 pt-2" id="d2">1885</h5>
+                                            <h5 class="mb-0 pt-2" id="d2">-</h5>
                                         </div>
                                     </div>
                                 </div>
@@ -59,7 +59,7 @@ heads();
                                                 <!-- <h5>Working</h5> -->
                                         </div>
                                         <div class="col s6">
-                                            <h5 class="mb-0 pt-2" id="d3">1885</h5>
+                                            <h5 class="mb-0 pt-2" id="d3">-</h5>
                                         </div>
                                     </div>
                                 </div>
@@ -74,7 +74,7 @@ heads();
                                                 <!-- <h5>Working</h5> -->
                                         </div>
                                         <div class="col s6">
-                                            <h6 class="mb-0 center pt-2" id="d4">Second Ago</h6>
+                                            <h6 class="mb-0 center pt-2" id="d4">-</h6>
                                         </div>
                                     </div>
                                 </div>
@@ -85,6 +85,19 @@ heads();
             <!-- Chart Start -->
             <div class="row">
 			<div class="col s12 m7 p-0">
+                
+                <div class="btn-group btn-group-toggle right" data-toggle="buttons">
+                            <label class="btn btn-secondary active">
+                    <input type="radio" name="timeframe_short"  id="minute" autocomplete="off"  checked > Hour
+                </label>
+                            <label class="btn btn-secondary ">
+                    <input type="radio" name="timeframe_short"  id="hour" autocomplete="off" > Day
+                </label>
+                            <label class="btn btn-secondary ">
+                    <input type="radio" name="timeframe_short" id="day" autocomplete="off" > Week
+                </label>
+                </div>
+                
 				<canvas id="history_short">Your browser does not support the canvas element.</canvas>
 			</div>
 			<div class="col s12 m5">

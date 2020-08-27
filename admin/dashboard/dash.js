@@ -1,28 +1,36 @@
-function generate_chart(suc,fail){
-    new Chart(document.getElementById("history_short").getContext('2d'), {
+let historyShort;
+
+$('#minute').val(hourTime);
+$('#hour').val(dayTime);
+$('#day').val(weekTime);
+async function generate_chart(suc,fail){
+    console.log(fail);
+    console.log(suc);
+
+    historyShort= await new Chart(document.getElementById("history_short").getContext('2d'), {
         type: 'line',
         data: {
             datasets: [
             {
-                data: fail,
-                label: 'Offline',
-                backgroundColor: '#dc3545',
-                borderColor: '#dc3545',
-                borderWidth: 2,
-                radius: 0,
-                pointStyle: 'crossRot',
-                fill: true,
-                spanGaps: false,
+                data: fail ,
+                label: 'offline',
+				backgroundColor: '#dc3545',
+				borderColor: '#dc3545',
+				borderWidth: 2,
+				radius: 5,
+				pointStyle: 'crossRot',
+				fill: true,
+				spanGaps: false,
             },
             {
                 data: suc,
-                label: 'Online',
-                fill: false,
-                spanGaps: false,
-                backgroundColor: '#28a745',
-                borderColor: '#28a745',
-                lineTension: 0,
-                steppedLine: true
+                label: 'online',
+				fill: false,
+				spanGaps: false,
+				backgroundColor: '#28a745',
+				borderColor: '#28a745',
+				lineTension: 0,
+				steppedLine: true
             },
             ]
         },
@@ -71,11 +79,19 @@ function generate_chart(suc,fail){
                 }
             }
         }
+    });   
+    $('input[name=timeframe_short]').change(function () {
+    updateScale(historyShort, parseInt($('input[name=timeframe_short]:checked').val()), $('input[name=timeframe_short]:checked')[0].id);
     });
+}
+    function updateScale(chart, min, unit) {
+        chart.options.scales.xAxes[0].time.min = min;
+        chart.options.scales.xAxes[0].time.unit = unit;
+        chart.update(0);
     }
-
+    let ctx ;
     function generate_pie(online,offline){
-        var ctx = document.getElementById("online_report").getContext('2d');
+        ctx = document.getElementById("online_report").getContext('2d');
         new Chart(ctx, {
             type: 'pie',
             data: {
@@ -89,12 +105,14 @@ function generate_chart(suc,fail){
             options: {
                 title: {
                 display: true,
-                text: 'Online/Offline'
+                text: 'Live Report'
             },
             responsive: true,
             maintainAspectRatio: true,
             }
         });
+
+
     }
 
 
@@ -112,11 +130,11 @@ function generate_chart(suc,fail){
         ajax('/api/data/', { "fun": "dashboard_data" }, func, err);
         chart1();
     }
-    let online;
-    let offine;
+    let online1;
+    let offine1;
     function chart1(){
         let func = (data) => {
-            online=data;
+            online1=data;
             chart2();
         }
         let err = () => {
@@ -124,10 +142,10 @@ function generate_chart(suc,fail){
         }
         ajax('/api/data/', { "fun": "dashboard_chart_online" }, func, err);
     }
-    function chart2(){
+    async function chart2(){
         let func = (data) => {
-            offine=data;
-            generate_chart(online,offine);
+             offine1=data;
+              generate_chart(online1,offine1);
         }
         let err = () => {
             toast('try again later!');

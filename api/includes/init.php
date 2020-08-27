@@ -1,5 +1,6 @@
 <?php
 header('X-Frame-Options: SAMEORIGIN');
+header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + (60 * 60))); 
 extract($_POST);
 
 
@@ -10,13 +11,13 @@ function err($err, $display = true)
 {
 	$res['ok'] = false;
 	$res['err'] = $err;
-	if ($display) {
 	header('Content-type: application/json');
 	echo json_encode($res);
-	} else {
-		require 'nono.html';
-	}
-	die();
+	// if ($display) {
+	// } else {
+	// 	n403();
+	// }
+	// die();
 }
 
 //403 page
@@ -32,13 +33,7 @@ require '../../config.php';
 //Db Connection
 function db()
 {
-
-    $server = "localhost";
-    $username = "root";
-    $password = "";
-    $dbName = "server";
-
-    $db = mysqli_connect($server, $username, $password, $dbName) or die("Connection Failed");
+	$db = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die("Connection Failed");
     return $db;
 }
 

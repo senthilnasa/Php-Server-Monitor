@@ -1,4 +1,5 @@
 <?php
+
 require '../../includes/main.php';
 heads();
 ?>
@@ -17,9 +18,11 @@ heads();
         <table id="serverList" class="responsive-table highlight centered  ml-2">
                 <thead style="display: none;">
                     <tr>
-                        <th>Timestamp</th>
-                        <th>Ip</th>
-                        <th>State</th>
+                        <th>#</th>
+                        <th>Sever Name</th>
+                        <th>To</th>
+                        <th>Message</th>
+                        <th>Medium</th>
                     </tr>
                 </thead>
 
@@ -34,4 +37,4 @@ heads();
 <?php
 footer();
 ?>
-<script src="log.js"></script>
+<script src="notification.js"></script>
