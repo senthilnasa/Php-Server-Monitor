@@ -29,6 +29,7 @@ function n403()
 
 //Db Connection
 require '../../config.php';
+require '../../config.php';
 
 //Db Connection
 function db()

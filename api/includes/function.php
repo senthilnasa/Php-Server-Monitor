@@ -52,6 +52,22 @@ function dashboard_chart_offline()
 	return $ress;
 }
 
+function servers_dash_list($a){
+	$db = db();
+	$stmt = $db->prepare("SELECT server_name,server_id ,ROUND(UNIX_TIMESTAMP(updated_at) * 1000)AS tim  FROM server_master WHERE live=? AND state=1");
+	$stmt->bind_param('i', $a);
+	$stmt->execute();
+	$res = $stmt->get_result();
+	$stmt->close();
+	$db->close();
+	$ress=array();
+	while($row = mysqli_fetch_assoc($res)){
+		unset($row['timekey']);
+		$ress[]=$row;
+	}
+	return $ress;
+}
+
 function server_list()
 {
 	$db = db();
@@ -196,6 +212,7 @@ function server_online($sid)
 	}
 	return $ress;
 }
+
 
 
 function server_latency($sid)

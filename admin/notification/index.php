@@ -9,8 +9,8 @@ heads();
     <div class="row">
                 <div class="col s12 m12 p-0">
                     <blockquote>
-                        <h5 class="blue-text">Login Log</h5>
-                        <p>List of your logins</p>
+                        <h5 class="blue-text">Notification Log</h5>
+                        <p>List of your notifications</p>
                     </blockquote>
                 </div>
         </div>

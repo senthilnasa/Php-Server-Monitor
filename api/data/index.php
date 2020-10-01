@@ -27,6 +27,22 @@ switch ($fun) {
             $data=dashboard_chart_offline();
         break;    
 
+        case 'dashboard_live':
+            extract($_POST);
+            if($typ==0){
+
+                $data=servers_dash_list(0);
+            }
+            else if($typ==1){
+                $data=servers_dash_list(1);
+            }
+            else{
+                err("Invalid request");
+                die();
+            }
+        break;
+
+
     //User Manager List
         //User list
         case 'users_list':
@@ -38,11 +54,13 @@ switch ($fun) {
             check('mail', 'mail Required');
             check('name', 'name Required');
             check('tid', 'tid Required');
+            extract($_POST);
             $data=user_update($user_id,$mail,$name,$tid);
         break;  
          //Delete User
         case 'user_delete':
             check('user_id', 'user_id Required');
+            extract($_POST);
             $data=user_delete($user_id);
         break; 
 
@@ -53,6 +71,7 @@ switch ($fun) {
             check('name', 'name Required');
             check('uname', 'name Required');
             check('tid', 'tid Required');
+            extract($_POST);
             $data=user_add($uname,$mail,$name,$tid);
         break; 
         
@@ -74,27 +93,32 @@ switch ($fun) {
     // server_details
     case 'server_details':
         check('sid', 'sid Required');
+        extract($_POST);
         $data=server_details($sid);
     break; 
         // SErver Offile
 
     case 'server_off':
         check('sid', 'sid Required');
+        extract($_POST);
         $data=server_offline($sid);
     break; 
         //Server Onnline
     case 'server_on':
         check('sid', 'sid Required');
+        extract($_POST);
         $data=server_online($sid); 
      break; 
     //  latency
     case 'server_latency':
         check('sid', 'sid Required');
+        extract($_POST);
         $data=server_latency($sid); 
      break; 
     //  server_report
     case 'server_report':
         check('sid', 'sid Required');
+        extract($_POST);
         $data=server_report($sid); 
      break; 
 
@@ -106,6 +130,7 @@ switch ($fun) {
         check('telegram', 'telegram Required',true);
         check('state', 'state Required',true);
         check('email', 'state Required',true);
+        extract($_POST);
         $data=server_add($server_name,$url,$type,$telegram,$state,$email); 
      break; 
 
@@ -117,10 +142,12 @@ switch ($fun) {
         check('telegram', 'telegram Required',true);
         check('state', 'state Required',true);
         check('email', 'state Required',true);
+        extract($_POST);
         $data=server_update($sid,$server_name,$url,$type,$telegram,$state,$email); 
      break; 
      case 'server_delete':
         check('sid', 'sid Required');
+        extract($_POST);
         $data=server_delete($sid); 
      break; 
 

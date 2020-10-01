@@ -158,6 +158,7 @@ function verifyPass(){
         if(d4.length<1){
             return toast('Invalid Db name !');
         }
+        
 
         loginTab.hide();
         loadTab.fadeIn();
@@ -173,21 +174,23 @@ function verifyPass(){
         let func = (data) => {
             $('#config').val(data);
             toast('Db Config check Success');
-            auto_grow();
             $('#modal1').modal();
             $('#modal1').modal('open'); 
+            subTab.fadeIn();
+            loadTab.hide();
         }
         let err = () => {
-            toast('Invalid Db  Credential!');
+            loginTab.fadeIn();
+            loadTab.hide();
         }
-
         ajax('api/checkdb/', data, func, err);
 
 }
 
 function gen_db(){
 
-     
+        loadTab.fadeIn();
+        subTab.hide();
 
         let data = {
             'fun': 'db_add',
@@ -198,41 +201,28 @@ function gen_db(){
         };
 
         let func = (data) => {
-            if (data == true) {
-                toast('Db Config Success');
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
-            } else {
-                toast('Unable to genrate db config file!');
-                loginTab.fadeIn();
-                loadTab.hide();
-            }
+
+            toast('Installed Success');
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
         }
         let err = () => {
-            toast('Please Contact the admin!');
+            // toast(e);
         }
 
         ajax('api/checkdb/', data, func, err);
 }
 
-function auto_grow() {
-    element=$('#config');
-    element.style.height = "5px";
-    element.style.height = (element.scrollHeight)+"px";
-}
     </script>
 
 <div id="modal1" class="modal">
     <div class="modal-content">
-      <h4 >Create the <b>config.php</b> in home directory</h4>
-      <textarea class="center" id="config" oninput="auto_grow()" style="resize: none;
-    overflow: hidden;
-    min-height: 50px;
-    max-height: 100px;"></textarea>
+      <h4 >Create the <b>config.php</b>in home directory</h4>
+      <textarea  id="config" style="height: 900px;resize: none; overflow: hidden; max-height: 250px;"></textarea>
     </div>
     <div class="modal-footer">
-      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Continue</a>
     </div>
   </div>
 </body>

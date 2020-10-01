@@ -13,3 +13,4 @@ define ( 'DB_NAME', 'server' );//Provide the DB Name of Mysql server
 fwrite($myfile, $txt);
 fclose($myfile);
 ?>
+

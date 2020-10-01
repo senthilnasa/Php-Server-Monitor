@@ -128,16 +128,16 @@ footer();
     });
 
 
-    function setTable(fee, total) {
+    function setTable(data) {
         $('#creat_button').removeAttr("disabled");
         serverListHead.fadeIn(750);
         let html = '';
-        if (fee.length == 0 || total == 0) {
+        if (data.length == 0) {
             html += '<tr><td colspan="9" class="center">No Sever Deatils found</td></tr>';
             $(':button').prop('disabled', true);
         } else {
             let s = 1;
-            fee.forEach(f => {
+            data.forEach(f => {
                 html += '<tr>';
                 html += '<td>' + s + '</td>';
                 html += '<td>' + f.server_name + '</td>';
