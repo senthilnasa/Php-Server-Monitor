@@ -119,7 +119,8 @@ function generate_pie(online, offline) {
 
 
 function dashboard() {
-    let func = (data) => {
+    let func = (datas) => {
+        data=datas[0];
         $('#d1').html(data.d1);
         $('#d2').html(data.d2);
         $('#d3').html(data.d3);
@@ -186,10 +187,15 @@ function set_server_data(a) {
 
         // console.log(data.length);
         if (data.length == 0) {
-            htm += '<tr><td colspan="4" class="center">No Sever Deatils found</td></tr>';
+            htm = '<tr><td colspan="4" class="center">No Offline Server found</td></tr>';
+            
+            if (a == 1) {
+                 htm = '<tr><td colspan="4" class="center">No Online Sever  found</td></tr>';
+            }
+        
         } else {
             data.forEach(f => {
-                let t = new Date(f.tim);
+                let t = new Date(parseInt(f.tim));
                 htm += '<tr>';
                 htm += '<td>' + f.server_name + '</td>';
                 htm += '<td>' + t.toLocaleString() + '</td>';

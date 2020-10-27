@@ -60,27 +60,17 @@ function showmod(a,b){
     $('#mod_bod').html(b);
 }
 
-
-$("#edit_form").submit(function(e) {
+$("#edit_form").submit(function (e) {
     $('#edit_server').modal('close');
-    e.preventDefault(); 
-    let data = {
-        'fun': 'server_edit',
-        'sid': $_GET['id'],
-        'server_name':$('[name=server_name]').val(),
-        'url':$('[name=url]').val(),
-        'type': $('[name=type]').val(),
-        'telegram': $('[name=telegram]').val(),
-        'state': $('[name=state]').val(),
-        'email': $('[name=email]').val(),
-     };
+    e.preventDefault();
+    var data = $("#edit_form").serialize()+'&fun=server_edit'+'&sid='+$_GET['id'];
     let func = (data) => {
-        if (data === true) {  
+        if (data === true) {
+            // serverListBody.fadeOut(50);
             toast('Updated Successfully');
             server_deatils();
             live_report();
-        }
-        else{
+        } else {
             toast('Please Try again');
         }
     }
@@ -90,7 +80,6 @@ $("#edit_form").submit(function(e) {
 
     ajax('/api/data/', data, func, err);
 });
-
 
 
 $(document).ready(() => {
@@ -105,9 +94,19 @@ $(document).ready(() => {
 
 function set_page(list) {
     $('[name=server_name]').val(list.server_name);
-    $('[name=url]').val(list.url);
-
-
+    $('[name=url]').val(list.ip);
+    $("input[name*='header_name']" ).val(list.header_name);
+    $("input[name*='header_value']" ).val(list.header_value);
+    $("input[name*='port']" ).val(list.port);
+    $("input[name*='post_field']" ).val(list.post_field);
+    $("input[name*='ssl']" ).val(list.ssl);
+    $("input[name*='threshold']" ).val(list.threshold);
+    $("input[name*='time_out']" ).val(list.time_out);
+    $("input[name*='user_name']" ).val(list.user_name);
+    $("input[name*='user_pass']" ).val(list.user_pass);
+    
+    $('select[name^="redirect_type"] option[value="'+list.redirect_type+'"]').attr("selected","selected").change();
+    $('select[name^="method"] option[value="'+list.method+'"]').attr("selected","selected").change();
     $('select[name^="type"] option[value="'+list.type+'"]').attr("selected","selected").change();
     $('select[name^="state"] option[value="'+list.state+'"]').attr("selected","selected").change();
     $('select[name^="email"] option[value="'+list.email+'"]').attr("selected","selected").change();
@@ -117,8 +116,8 @@ function set_page(list) {
 
     $('#server_title1').html('Details of ' + list.server_name);
     $('#server_title2').html(list.server_name);
-    $('#server_url').attr("href", list.url);
-    $('#server_url').html(list.url.substr(0, 12) + ' ..');
+    $('#server_url').attr("href", list.ip);
+    $('#server_url').html(list.ip.substr(0, 12) + ' ..');
     $('#server_live').html('Offline');
     $('#server_state').html('<i class="material-icons">close</i>');
     $('#server_type').html(list.type);
@@ -159,7 +158,8 @@ function server_deatils() {
         'fun': 'server_details',
         'sid': $_GET['id'],
     };
-    let func = (list) => {
+    let func = (data) => {
+        list=data[0];
         if (list == null) {
             toast('Unable find the server Details');
         } else {
@@ -208,6 +208,7 @@ function server_chart_live2() {
 
 
 function generate_pie(online, offline) {
+    console.log(offline,online);
     ctx = document.getElementById("online_report").getContext('2d');
     new Chart(ctx, {
         type: 'pie',
@@ -234,8 +235,10 @@ function generate_pie(online, offline) {
 }
 
 function live_report() {
-    let func = (data) => {
-        generate_pie(data.x, data.y);
+    let func = (datas) => {
+        data=datas[0];
+        console.log()
+        generate_pie(data.z, data.y);
     }
     let data = {
         'fun': 'server_report',
@@ -431,4 +434,63 @@ function updateScale(chart, min, unit) {
     chart.options.scales.xAxes[0].time.min = min;
     chart.options.scales.xAxes[0].time.unit = unit;
     chart.update(0);
+}
+
+//Edit
+
+function ser_typ() {
+    let typ = $("select[name=type]").val();
+    console.log(typ);
+
+    if (typ == 'ping') {
+
+        return ping_type();
+
+    }
+    if (typ == 'service') {
+        return service_type();
+
+    }
+    if (typ == 'website') {
+
+        return website_type();
+    }
+
+}
+
+function en(a) {
+    var nodes = document.getElementById(a).getElementsByTagName('*');
+    for (var i = 0; i < nodes.length; i++) {
+        nodes[i].disabled = false;
+    }
+}
+
+function di(a) {
+    var nodes = document.getElementById(a).getElementsByTagName('*');
+    for (var i = 0; i < nodes.length; i++) {
+        nodes[i].disabled = true;
+    }
+}
+
+function ping_type() {
+    di('web1');
+    di('port');
+    $('#port').fadeOut(500);
+    $('#web1').fadeOut(500);
+}
+ping_type();
+
+function service_type() {
+    en("port");
+    di("web1");
+    $('#web1').fadeOut(500);
+    $('#port').fadeIn(500);
+}
+
+
+function website_type() {
+    en("web1");
+    di("port");
+    $('#port').fadeOut(500);
+    $('#web1').fadeIn(500);
 }

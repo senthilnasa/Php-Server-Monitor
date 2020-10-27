@@ -25,19 +25,43 @@ function verifyPass(){
     };
 
     let func = (data) => {
-        if (data === true) {
-            toast('Login Success');
+        toast('Login Success');
             setTimeout(() => {
                 window.location.reload();
             }, 1000);
-        } else {
-            toast('Invalid User Details!');
-            loginTab.fadeIn();
-            loadTab.hide();
-        }
     }
     let err = () => {
-        toast('Please Contact the admin!');
+        loginTab.fadeIn(1000);
+        loadTab.hide();
+    }
+
+    ajax('/api/auth/', data, func, err);
+}
+
+function resetPass(){
+    login = $('#login_id').val();
+
+    if(login.length<2){
+        return toast('Invalid User Id !');
+    }
+    loginTab.hide();
+    loadTab.fadeIn();
+
+    let data = {
+        'fun': 'reset_pass',
+        'login': login
+    };
+
+    let func = (data) => {
+        toast(data);
+            setTimeout(() => {
+                window.history.go(-1);
+            }, 5000);
+    }
+
+    let err = () => {
+        loginTab.fadeIn(1000);
+        loadTab.hide();
     }
 
     ajax('/api/auth/', data, func, err);

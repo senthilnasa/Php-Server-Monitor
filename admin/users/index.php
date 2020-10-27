@@ -13,7 +13,7 @@ heads();
                 <p>List of Users</p>
             </blockquote>
         </div>
-        <a data-target="modal1" class="btn modal-trigger right" href="javascript:addUser();" >Add User</a>
+        <a data-target="modal1" class="btn modal-trigger right" href="javascript:addUser();">Add User</a>
         <br>
     </div>
     <div class="container center-align">
@@ -38,9 +38,6 @@ heads();
     </div>
     </div>
 </main>
-<?php
-footer();
-?>
 <div id="edit_modal" class="modal">
     <div class="modal-content">
         <h5 id="edit_tit">Update User</h5>
@@ -105,6 +102,19 @@ footer();
                         <span class="helper-text" data-error="wrong" data-success="right"></span>
                     </div>
                 </div>
+                <div id="pass_div">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="password" type="password" class="validate">
+                            <label for="password">Password</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="passwordConfirm" type="password">
+                            <label id="lblPasswordConfirm" for="passwordConfirm" data-error="Password not match" data-success="Password Match">Password (Confirm)</label>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="input-field col s12">
                         <input placeholder="Telegram Id" value="-" id="creat_tid" required type="text" class="validate">
@@ -124,4 +134,6 @@ footer();
         <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
     </div>
 </div>
-<script src="user.js"></script>
+<?php
+footer();
+?>

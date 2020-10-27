@@ -34,4 +34,3 @@ heads();
 <?php
 footer();
 ?>
-<script src="log.js"></script>

@@ -37,4 +37,3 @@ heads();
 <?php
 footer();
 ?>
-<script src="notification.js"></script>

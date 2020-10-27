@@ -139,4 +139,3 @@ heads();
 <?php
 footer();
 ?>
-<script src="dash.js"></script>

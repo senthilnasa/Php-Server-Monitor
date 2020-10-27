@@ -21,7 +21,7 @@ heads();
                 <tr>
                     <th>#</th>
                     <th>Name</th>
-                    <th>url</th>
+                    <th>Ip</th>
                     <th>Type</th>
                     <th>Last Offline</th>
                     <th>Last Online</th>
@@ -49,19 +49,19 @@ heads();
                 <div class="row">
                     <div class="input-field col s12">
                         <input placeholder="Server Name" name="server_name" type="text" required class="validate">
-                        <label for="creat_name">Server Name</label>
+                        <label >Server Name</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
                         <input placeholder="Ip/Url" name="url" type="text" required class="validate">
-                        <label for="creat_name">Ip/Url</label>
+                        <label >Ip/Url</label>
                     </div>
                 </div>
                 <div class="row">
 
                     <div class="input-field col s12">
-                        <select required class="validate" name="type">
+                        <select required class="validate" name="type" onchange="ser_typ()">
                             <option value="ping">Ping</option>
                             <option value="service">Service</option>
                             <option value="website">Website</option>
@@ -70,6 +70,102 @@ heads();
                     </div>
 
                 </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input placeholder="Time out" name="time_out" type="text" value="10" onkeypress="return onlyNumberKey(event)" required class="validate">
+                        <label >Time out</label>
+                    </div>
+                </div>
+
+
+
+                <div class="row" id="port">
+                    <div class="input-field col s12">
+                        <input placeholder="Port" name="port" type="text" value="80" onkeypress="return onlyNumberKey(event)" required class="validate">
+                        <label >Port</label>
+                    </div>
+                </div>
+
+                <div id="web1">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input placeholder="SSL Exipry Alert" name="ssl" type="text" value="0" onkeypress="return onlyNumberKey(event)" required class="validate">
+                            <label >SSL Exipry Alert date "Use 0 to disable check."</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <p>Request method</p>
+
+                        <div class="input-field col s12">
+                            <select required class="browser-default" name="method">
+                                <option value="GET">GET</option>
+                                <option value="HEAD">HEAD</option>
+                                <option value="POST">POST</option>
+                                <option value="PUT">PUT</option>
+                                <option value="DELETE">DELETE</option>
+                                <option value="CONNECT">CONNECT</option>
+                                <option value="OPTIONS">OPTIONS</option>
+                                <option value="TRACE">TRACE</option>
+                                <option value="PATCH">PATCH</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input placeholder="param1=val1&amp;param2=val2&amp;..." name="post_field" type="text" class="validate">
+                            <label >Post field</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <p>Redirecting to another domain</p>
+                        <div class="input-field col s12">
+                            <select class="browser-default" name="redirect_type">
+                                <option value="1">ok</option>
+                                <option value="0">bad</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <p>Authentication Settings (Optional)</p>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input placeholder="Header name" name="header_name" type="text" class="validate">
+                            <label >Header name</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input placeholder="Header value" name="header_value" type="text" class="validate">
+                            <label >Header value</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input placeholder="User Name" name="user_name" type="text" class="validate">
+                            <label >User Name</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input placeholder="User Password" name="user_pass" type="text" class="validate">
+                            <label >User Password</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="port">
+                    <div class="input-field col s12">
+                        <input placeholder="Warning threshold" name="threshold" type="text" value="5" onkeypress="return onlyNumberKey(event)" required class="validate">
+                        <label >Warning threshold</label>
+                        <p>Number of failed checks required before it is marked offline.</p>
+                    </div>
+                </div>
+
+
+
+                <p>Notification</p>
                 <div class="row">
                     <div class="input-field col s12">
                         <select required class="validate" name="telegram">
@@ -113,92 +209,3 @@ heads();
 <?php
 footer();
 ?>
-<script>
-    const serverListHead = $('#serverList > thead');
-    const serverListBody = $('#serverList > tbody');
-
-    $(document).ready(() => {
-        $('.modal').modal();
-        $('body').fadeIn(1000);
-        $('.sidenav').sidenav();
-        $('select').formSelect();
-        $(':button').prop('disabled', true);
-        $('.tooltipped').tooltip();
-        servers();
-    });
-
-
-    function setTable(data) {
-        $('#creat_button').removeAttr("disabled");
-        serverListHead.fadeIn(750);
-        let html = '';
-        if (data.length == 0) {
-            html += '<tr><td colspan="9" class="center">No Sever Deatils found</td></tr>';
-            $(':button').prop('disabled', true);
-        } else {
-            let s = 1;
-            data.forEach(f => {
-                html += '<tr>';
-                html += '<td>' + s + '</td>';
-                html += '<td>' + f.server_name + '</td>';
-                html += '<td><a href="' + f.url + '" target="_blank">' + f.url + '</a></td>';
-                html += '<td>' + f.type + '</td>';
-                html += '<td>' + f.last_offline + '</td>';
-                html += '<td>' + f.last_online + '</td>';
-                html += '<td>' + f.latency + '</td>';
-                if (f.state) {
-                    html += '<td>Enabled</td>';
-                } else {
-                    html += '<td>Disabled</td>';
-                }
-                html += '<td ><a class="waves-effect waves-light btn" href="../server/?id=' + f.server_id + '"><i class="material-icons right">settings</i>More</a></td>';
-                html += '</tr>';
-                s++;
-            });
-        }
-        serverListBody.html(html);
-        serverListBody.fadeIn(1000);
-    }
-
-    function servers() {
-        let func = (list) => {
-            setTable(list);
-        }
-        let err = () => {
-            toast('try again later!');
-        }
-        ajax('/api/data/', {
-            "fun": "server_list"
-        }, func, err);
-    }
-
-    $("#edit_form").submit(function(e) {
-    $('#edit_server').modal('close');
-    e.preventDefault(); 
-    let data = {
-        'fun': 'server_add',
-        'server_name':$('[name=server_name]').val(),
-        'url':$('[name=url]').val(),
-        'type': $('[name=type]').val(),
-        'telegram': $('[name=telegram]').val(),
-        'state': $('[name=state]').val(),
-        'email': $('[name=email]').val(),
-     };
-    let func = (data) => {
-        if (data === true) {  
-            serverListBody.fadeOut(50);
-            toast('Updated Successfully');
-            servers();
-        }
-        else{
-            toast('Please Try again');
-        }
-    }
-    let err = () => {
-        toast('Please Contact the admin!');
-    }
-
-    ajax('/api/data/', data, func, err);
-});
-
-</script>

@@ -1,16 +1,18 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-$ft=true;
-require('../includes/init.php');
-extract($_POST);
-$data = null;
 
-// echo json_encode($_REQUEST);
+require_once __DIR__ . '/../includes/init.php';
+
+
 if(($_SESSION['islogin']) && (!$_SESSION['islogin'])){
     err('Login Required');
 }
 
 check('fun', 'Type Required');
+extract($_POST);
 
 switch ($fun) {
 
@@ -71,8 +73,9 @@ switch ($fun) {
             check('name', 'name Required');
             check('uname', 'name Required');
             check('tid', 'tid Required');
+            check('pass', 'pass Required');
             extract($_POST);
-            $data=user_add($uname,$mail,$name,$tid);
+            $data=user_add($uname,$mail,$name,$tid,$pass);
         break; 
         
 
@@ -124,47 +127,133 @@ switch ($fun) {
 
     // Server Addd
     case 'server_add':
+        check('type', 'type Required');
+
+        if($type=="ping"){
         check('server_name', 'server_name Required');
         check('url', 'url Required');
         check('type', 'type Required');
+        check('time_out', 'time_out Required');
         check('telegram', 'telegram Required',true);
         check('state', 'state Required',true);
-        check('email', 'state Required',true);
+        check('email', 'email Required',true);
+        check('threshold', 'threshold Required',true);
         extract($_POST);
-        $data=server_add($server_name,$url,$type,$telegram,$state,$email); 
+        
+        $data=server_add($server_name,$url,$type,$telegram,$state,$email,$threshold,$time_out); 
+        }
+        if($type=="service"){
+            check('server_name', 'server_name Required');
+            check('url', 'url Required');
+            check('type', 'type Required');
+            check('time_out', 'time_out Required');
+            check('port', 'port Required',true);
+            check('telegram', 'telegram Required',true);
+            check('email', 'email Required',true);
+            check('state', 'state Required',true);
+            check('threshold', 'threshold Required',true);
+            extract($_POST);
+
+            $data=server_add_s($server_name,$url,$type,$telegram,$state,$email,$threshold,$time_out,$port); 
+
+        }
+        if($type=="website"){
+            // complete($_POST);
+            check('server_name', 'server_name Required');
+            check('url', 'url Required');
+            check('type', 'type Required');
+            check('time_out', 'time_out Required');
+            check('method', 'method Required');
+            check('post_field', 'post_field Required',true);
+            check('ssl', 'ssl Required',true);
+            check('header_name', 'header_name Required',true);
+            check('header_value', 'header_value Required',true);
+            check('telegram', 'telegram Required',true);
+            check('email', 'email Required',true);
+            check('state', 'state Required',true);
+            check('threshold', 'threshold Required',true);
+            check('user_name', 'User Name Required',true);
+            check('user_pass', 'User Password Required',true);
+            
+
+            check('redirect_type', 'redirect_type Required',true);
+        extract($_POST);
+
+            $data=server_add_w($server_name,$url,$type,$telegram,$state,$email,$threshold,$time_out,$method,$post_field,$header_name,$header_value,$redirect_type,$ssl,$user_name,$user_pass); 
+
+        }
      break; 
 
      case 'server_edit':
-        check('server_name', 'server_name Required');
-        check('sid', 'sid Required');
-        check('url', 'url Required');
         check('type', 'type Required');
-        check('telegram', 'telegram Required',true);
-        check('state', 'state Required',true);
-        check('email', 'state Required',true);
-        extract($_POST);
-        $data=server_update($sid,$server_name,$url,$type,$telegram,$state,$email); 
-     break; 
-     case 'server_delete':
         check('sid', 'sid Required');
+
+
+            if($type=="ping"){
+            check('server_name', 'server_name Required');
+            check('url', 'url Required');
+            check('type', 'type Required');
+            check('time_out', 'time_out Required');
+            check('telegram', 'telegram Required',true);
+            check('state', 'state Required',true);
+            check('email', 'email Required',true);
+            check('threshold', 'threshold Required',true);
+            extract($_POST);
+            // complete($_POST);
+
+            $data=server_update($sid, $server_name, $url, $type, $telegram, $state, $email,$threshold,$time_out); 
+            }
+            if($type=="service"){
+                check('server_name', 'server_name Required');
+                check('url', 'url Required');
+                check('type', 'type Required');
+                check('time_out', 'time_out Required');
+                check('port', 'port Required',true);
+                check('telegram', 'telegram Required',true);
+                check('email', 'email Required',true);
+                check('state', 'state Required',true);
+                check('threshold', 'threshold Required',true);
+                extract($_POST);
+                $data=server_update_s($sid, $server_name, $url, $type, $telegram, $state, $email,$threshold,$time_out,$port); 
+    
+            }
+            if($type=="website"){
+                // complete($_POST);
+                check('server_name', 'server_name Required');
+                check('url', 'url Required');
+                check('type', 'type Required');
+                check('time_out', 'time_out Required');
+                check('method', 'method Required');
+                check('post_field', 'post_field Required',true);
+                check('ssl', 'ssl Required',true);
+                check('header_name', 'header_name Required',true);
+                check('header_value', 'header_value Required',true);
+                check('telegram', 'telegram Required',true);
+                check('email', 'email Required',true);
+                check('state', 'state Required',true);
+                check('threshold', 'threshold Required',true);
+                check('user_name', 'User Name Required',true);
+                check('user_pass', 'User Password Required',true);
+                
+    
+                check('redirect_type', 'redirect_type Required',true);
+                extract($_POST);
+    
+                $data=server_update_w($sid,$server_name,$url,$type,$telegram,$state,$email,$threshold,$time_out,$method,$post_field,$header_name,$header_value,$user_name,$user_pass,$redirect_type,$ssl); 
+    
+            }
+
+         break; 
+
+        case 'server_delete':
         extract($_POST);
         $data=server_delete($sid); 
-     break; 
-
+        break;
   
     //Default
     default:
-        waste();
+       err('Invalid request');
 }
 
-// if ($data == null) {
-//     err('No Details Found');
-// }
 
 complete($data);
-
-function waste()
-{
-    n403();
-    die();
-}

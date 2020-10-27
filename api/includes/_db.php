@@ -1,11 +1,11 @@
 <?php
-
 require_once __DIR__ . '/response.php';
+require_once __DIR__.'../../../config.php';
 
 function db(): \mysqli
 {
     try {
-        $db = mysqli_connect('localhost', 'root', '', 'event_admin');
+        $db = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
         return $db;
     } catch (\Throwable $th) {
         err('Connection error');

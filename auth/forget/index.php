@@ -1,7 +1,7 @@
 <?php
 
-if (!file_exists("../config.php")) {
-    header("Location: ../install", true);
+if (!file_exists("../../config.php")) {
+    header("Location: ../../install", true);
     die();
 }
 if (!isset($_SESSION)) {
@@ -9,7 +9,7 @@ if (!isset($_SESSION)) {
     session_start();
 }
 if (isset($_SESSION['islogin']) &&  $_SESSION['islogin'] == true) {
-    header("Location: ../admin/dashboard/", true);
+    header("Location: ../../admin/dashboard/", true);
     die();
 }
 
@@ -19,10 +19,10 @@ if (isset($_SESSION['islogin']) &&  $_SESSION['islogin'] == true) {
 
 <head>
     <title>Bitsathy Server Management | Login </title>
-    <link type="text/css" rel="stylesheet" href="../assets/fonts/material-icon/material-icon.css">
-    <link type="text/css" rel="stylesheet" href="../assets/css/materialize.min.css" media="screen,projection" />
-    <link type="text/css" rel="stylesheet" href="../assets/css/style.css" />
-    <link type="text/css" rel="stylesheet" href="../auth/assets/plane.css" />
+    <link type="text/css" rel="stylesheet" href="../../assets/fonts/material-icon/material-icon.css">
+    <link type="text/css" rel="stylesheet" href="../../assets/css/materialize.min.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="../../assets/css/style.css" />
+    <link type="text/css" rel="stylesheet" href="../../auth/assets/plane.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex">
 </head>
@@ -72,13 +72,13 @@ if (isset($_SESSION['islogin']) &&  $_SESSION['islogin'] == true) {
             <div class="col s12 m6 offset-m3 l6 offset-l3 card ">
                 <div class="pt-4 pb-4">
                     <div class="row">
-                        <a href="/"><img class="col s12" src="../assets/images/logo.png"></a>
+                        <a href="/"><img class="col s12" src="../../assets/images/logo.png"></a>
                     </div>
                     <!-- Auth Tab start -->
                     <div class="p-1 pt-3">
 
                         <center>
-                            <h5>LOGIN</h5>
+                            <h5>RESET PASSWORD</h5>
                         </center>
                         <div class="row center">
 
@@ -87,19 +87,8 @@ if (isset($_SESSION['islogin']) &&  $_SESSION['islogin'] == true) {
                                 <input id="login_id" autocomplete="off" name="loginEmail" type="text" class="validate" required>
                                 <label for="login_id">User Name</label>
                             </div>
-
-                            <div class="input-field col s12">
-                                <i class="material-icons prefix">lock</i>
-                                <input id="login-pass" name="loginPass" type="password" class="validate" required>
-                                <label for="login-pass">Password</label>
-                            </div>
-                            <div class="col s11 m6" style="float: right;">
-                                <a class="blue-text" href="forget/"><b>Forgot Password?</b></a>
-                                <br>
-                                <br>
-                            </div>
                             <div class="input-field col s12 center">
-                                <button class="btn waves-effect waves-light" id="loginSubmit" onclick="verifyPass()">Login
+                                <button class="btn waves-effect waves-light" id="loginSubmit" onclick="resetPass()">Login
                                     <i class="material-icons right">exit_to_app</i>
                                 </button>
                                 <div class="preloader-wrapper small active" id="loginProgress" style="display: none;">
@@ -123,10 +112,10 @@ if (isset($_SESSION['islogin']) &&  $_SESSION['islogin'] == true) {
         </div>
     </div>
 
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/materialize.min.js"></script>
-    <script src="../assets/js/script.js"></script>
-    <script src="../auth/assets/auth.js"></script>
+    <script src="../../assets/js/jquery.min.js"></script>
+    <script src="../../assets/js/materialize.min.js"></script>
+    <script src="../../assets/js/script.js"></script>
+    <script src="../../auth/assets/auth.js"></script>
 </body>
 
 </html>

@@ -7,7 +7,7 @@ $(document).ready(() => {
     $('.sidenav').sidenav();
     $(':button').prop('disabled', true);
     $('.tooltipped').tooltip();
-    servers();
+    users();
 });
 
 
@@ -41,7 +41,7 @@ function setTable(fee, total) {
     serverListBody.fadeIn(1000);
 }
 
-function servers() {
+function users() {
     let func = (list) => {
         setTable(list);
     }
@@ -56,14 +56,18 @@ function edit(name, mail, tel,uid) {
     $('#edit_email_inline').val(mail);
     $('#edit_tid').val(tel);
     $('#edit_name').val(name);
+    $('#pass_div').hide();
     $('#edit_tit').html('Update user of '+name);
     $('#edit_modal').modal();
     $('#edit_modal').modal('open');
     $('#edit_button').removeAttr("disabled");
     user_id=uid;
+
 }
 
 function addUser(){
+    $('#pass_div').show();
+
     $('#creat_modal').modal();
     $('#creat_modal').modal('open');
     $('#creat_button').removeAttr("disabled");
@@ -79,7 +83,7 @@ function del(a,b){
             if (data === true) {  
                 serverListBody.fadeOut(50);
                 toast('Updated Successfully');
-                servers();
+                users();
             }
             else{
                 toast('Please Try again');
@@ -96,8 +100,8 @@ function del(a,b){
 }
 
 $("#edit_form").submit(function(e) {
-    $('#edit_modal').modal('close');
     e.preventDefault(); 
+    $('#edit_modal').modal('close');
     let data = {
         'fun': 'user_update',
         'user_id': user_id,
@@ -109,7 +113,7 @@ $("#edit_form").submit(function(e) {
         if (data === true) {  
             serverListBody.fadeOut(50);
             toast('Updated Successfully');
-            servers();
+            users();
         }
         else{
             toast('Please Try again');
@@ -123,24 +127,33 @@ $("#edit_form").submit(function(e) {
 });
 
 $("#creat_form").submit(function(e) {
-    $('#creat_modal').modal('close');
     e.preventDefault(); 
+    if($("#passwordConfirm").val().length<6){
+        return toast('Password Sholud be atleast 7 digit !!');
+    }
+
+    if ($("#password").val() != $("#passwordConfirm").val()) {
+        return toast('Both password sholud be same!!');
+    }
+
+    $('#creat_modal').modal('close');
     let data = {
         'fun': 'user_add',
         'mail': $('#creat_email_inline').val(),
         'name': $('#creat_name').val(),
         'uname': $('#creat_uname').val(),
-        'tid': $('#creat_tid').val()
+        'tid': $('#creat_tid').val(),
+        'pass': $('#password').val()
 
      };
     let func = (data) => {
         if (data === true) {  
             serverListBody.fadeOut(50);
             toast('Updated Successfully');
-            servers();
+            users();
         }
         else{
-            toast('Please Try again');
+            toast(data);
         }
     }
     let err = () => {
@@ -148,4 +161,30 @@ $("#creat_form").submit(function(e) {
     }
 
     ajax('/api/data/', data, func, err);
+});
+
+$("#password").on("keyup", function (e) {
+    let a=$(this).val().length;
+    if(a<6){
+        console.log(a);
+        $(this).removeClass("valid").addClass("invalid");
+    }
+    else{
+        $(this).removeClass("invalid").addClass("valid");
+    }
+
+
+    if ($(this).val() != $("#passwordConfirm").val()) {
+        $("#passwordConfirm").removeClass("valid").addClass("invalid");
+    } else {
+        $("#passwordConfirm").removeClass("invalid").addClass("valid");
+    }
+});
+
+$("#passwordConfirm").on("keyup", function (e) {
+    if ($("#password").val() != $(this).val()) {
+        $(this).removeClass("valid").addClass("invalid");
+    } else {
+        $(this).removeClass("invalid").addClass("valid");
+    }
 });

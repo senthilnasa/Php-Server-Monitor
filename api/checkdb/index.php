@@ -9,6 +9,7 @@ if($_POST['fun']=='verify_login'){
     $password = $_POST['d3'];
     $db = $_POST['d4'];
     $res=array();
+
     $mysqli = new mysqli($servername, $username, $password,$db);
     $res['data'] = "<?php
     define ( 'DB_HOST', '".$servername."' ); //Provide the IP/Host where Mysql server is found
@@ -24,22 +25,31 @@ if($_POST['fun']=='verify_login'){
       $res['ok'] = true;
       co($res);
     } 
+    $mysqli ->close();
+
 }
 
 if($_POST['fun']=='db_add'){
 
-  $servername = $_POST['d1'];
-  $username = $_POST['d2'];
-  $password = $_POST['d3'];
-  $db = $_POST['d4'];
   $res=array();
-  $mysqli = new mysqli($servername, $username, $password,$db);
+
+  if(!file_exists("../../config.php")){
+    $res['ok'] = false;
+    $res['err'] = "File is not Found config.php in not found home Directory";
+    co($res);
+  }
+
+  require '../../config.php';
+  
+  $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
   if($mysqli -> connect_errno) {
     $res['ok'] = false;
     $res['err'] = "Failed to connect to MySQL: " . $mysqli -> connect_error;
     co($res);
-  }else{
-   $sql = "USE `".$db."`;
+  }
+  else{
+   $sql = "USE `".DB_NAME."`;
     DROP TABLE IF EXISTS `config`;
     
     CREATE TABLE `config` (
@@ -137,15 +147,16 @@ if($_POST['fun']=='db_add'){
     
     ";
     
-    
+    // echo $sql;
     if ($mysqli -> multi_query($sql)) {
       $res['ok'] = true;
       co($res);
     } else {
       $res['ok'] = false;
-      $res['err'] = "grant all access to user '".$username."' to proceed !";
+      $res['err'] = "Grant all access to user '".DB_USER."' to proceed !";
       co($res);
     }
+    $mysqli ->close();
   }
   
 }
